@@ -1,12 +1,21 @@
-from flask import Flask, request, jsonify
-
-app = Flask(__name__)
-
 @app.route('/sendpush', methods=['POST'])
 def send_push():
-    data = request.form.to_dict(flat=False)
-    print("Tam data:", data)
-    return jsonify({"data": data})
+    try:
+        data = request.get_json()
+        print("Gelen JSON:", data)
 
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=10000)
+        player_ids = data.get("player_ids", [])
+        title = data.get("title", "")
+        message = data.get("message", "")
+
+        print("player_ids:", player_ids)
+        print("title:", title)
+        print("message:", message)
+
+        if not player_ids or not title or not message:
+            return jsonify({"status": "error", "message": "Eksik bilgi"}), 400
+
+        return jsonify({"status": "ok", "player_ids": player_ids, "title": title, "message": message})
+
+    except Exception as e:
+        return jsonify({"status": "error", "message": str(e)}), 500
