@@ -21,7 +21,7 @@ def send_push():
         title = data.get("title", "")
         message = data.get("message", "")
 
-        print("player_ids:", player_ids, flush=True)
+        print("player_ids:", player_ids, type(player_ids), flush=True)
         print("title:", title, flush=True)
         print("message:", message, flush=True)
 
